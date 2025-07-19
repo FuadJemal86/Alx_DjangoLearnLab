@@ -28,12 +28,12 @@ def books_in_library(library_name):
     except Library.DoesNotExist:
         print("Library not found.")
 
-# Retrieve the librarian for a library using filter
+# Retrieve the librarian for a library using Librarian.objects.get()
 def librarian_of_library(library_name):
     try:
-        # Get the library using name and retrieve the related librarian
+        # Get the librarian for the specified library using Librarian.objects.get()
         library = Library.objects.get(name=library_name)
-        librarian = library.librarian  # Direct relation
+        librarian = Librarian.objects.get(library=library)  # Using Librarian.objects.get()
         print(f"Librarian for {library_name}: {librarian.name}")
     except Library.DoesNotExist:
         print("Library not found.")
