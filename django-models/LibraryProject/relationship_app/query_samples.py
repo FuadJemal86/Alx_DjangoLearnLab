@@ -1,17 +1,32 @@
-from relationship_app.models import Author, Book, Library
+from relationship_app.models import Author, Book, Library, Librarian
 
-# 1. Query all books by a specific author
-author = Author.objects.get(name="George Orwell")
-books_by_author = author.books.all()
-print("Books by George Orwell:", list(books_by_author))
-# Expected Output: Books by George Orwell: [<Book: 1984>, <Book: Animal Farm>]
+# Query all books by a specific author
+def books_by_author(author_name):
+    try:
+        author = Author.objects.get(name=author_name)
+        books = author.books.all()
+        for book in books:
+            print(book.title)
+    except Author.DoesNotExist:
+        print("Author not found.")
 
-# 2. List all books in a library
-library = Library.objects.get(name="Central Library")
-books_in_library = library.books.all()
-print("Books in Central Library:", list(books_in_library))
-# Expected Output: Books in Central Library: [<Book: 1984>, <Book: Brave New World>]
+# List all books in a library
+def books_in_library(library_name):
+    try:
+        library = Library.objects.get(name=library_name)
+        books = library.books.all()
+        for book in books:
+            print(book.title)
+    except Library.DoesNotExist:
+        print("Library not found.")
 
-# 3. Retrieve the librarian for a library
-librarian = library.librarian
-print("Librarian of Central Library:", librarian.name)
+# Retrieve the librarian for a library
+def librarian_of_library(library_name):
+    try:
+        library = Library.objects.get(name=library_name)
+        librarian = library.librarian
+        print(f"Librarian for {library_name}: {librarian.name}")
+    except Library.DoesNotExist:
+        print("Library not found.")
+    except Librarian.DoesNotExist:
+        print("Librarian not found for this library.")
