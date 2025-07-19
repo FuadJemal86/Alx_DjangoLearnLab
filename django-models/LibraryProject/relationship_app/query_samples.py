@@ -15,4 +15,3 @@ print("Books in Central Library:", list(books_in_library))
 # 3. Retrieve the librarian for a library
 librarian = library.librarian
 print("Librarian of Central Library:", librarian.name)
-# Expected Output: Librarian of Central Library: Fuad Jemal
