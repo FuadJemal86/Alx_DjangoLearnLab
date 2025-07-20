@@ -20,6 +20,8 @@ class LibraryDetailView(DetailView):
     context_object_name = 'library'  # Name of the context variable to be passed to the template
 
 
+
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
