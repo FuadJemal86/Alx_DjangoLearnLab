@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm
 from .models import Book, Library
+from django.contrib.auth import login
 
 # Function-based view to list all books
 def list_books(request):
@@ -19,7 +20,8 @@ def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user=form.save()
+            login(request, user)
             return redirect('login')
     else:
         form = UserCreationForm()
