@@ -56,6 +56,10 @@ X_FRAME_OPTIONS = 'DENY'  # Prevent clickjacking
 SECURE_CONTENT_TYPE_NOSNIFF = True  # Stop MIME-type sniffing
 SECURE_BROWSER_XSS_FILTER = True    # Enable XSS filtering in browsers
 
+# Use this if behind a proxy/load balancer (e.g., Heroku, Nginx, Render)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
