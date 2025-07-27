@@ -20,6 +20,17 @@ AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 
 
+DEBUG = False  
+
+ALLOWED_HOSTS = ['yourdomain.com', '127.0.0.1'] 
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
