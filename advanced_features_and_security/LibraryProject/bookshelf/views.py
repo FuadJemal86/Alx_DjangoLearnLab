@@ -34,10 +34,11 @@ def delete_book(request, pk):
 
 from django.shortcuts import render
 from .models import Book
-from .forms import BookSearchForm
+from .forms import ExampleForm
+
 
 def search_books(request):
-    form = BookSearchForm(request.GET or None)
+    form = ExampleForm(request.GET or None)
     books = Book.objects.none()
     if form.is_valid():
         title = form.cleaned_data['title']
