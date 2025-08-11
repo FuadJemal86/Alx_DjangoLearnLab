@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog'
 ]
+
+# Add these if not present
+LOGIN_REDIRECT_URL = 'home'         # where user is redirected after login
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
