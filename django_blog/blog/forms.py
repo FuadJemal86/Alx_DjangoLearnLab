@@ -73,4 +73,12 @@ class PostForm(forms.ModelForm):
         for name in tag_names:
             tag, created = Tag.objects.get_or_create(name=name)
             instance.tags.add(tag)
-        return instance        
+        return instance    
+        
+        
+from django import forms
+from taggit.forms import TagWidget as TaggitTagWidget
+
+class TagWidget(TaggitTagWidget):
+    pass
+        
