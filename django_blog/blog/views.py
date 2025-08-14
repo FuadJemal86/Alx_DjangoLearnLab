@@ -43,4 +43,60 @@ def profile(request):
     return render(request, 'blog/profile.html', {'u_form': u_form, 'p_form': p_form})
 
 
+
+
+
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from .models import Post
+from .forms import PostForm
+
+# 1. List all posts
+class PostListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'  # your template name
+    context_object_name = 'posts'
+    paginate_by = 5  # optional pagination
+
+# 2. View details of one post
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'blog/post_detail.html'
+
+# 3. Create new post
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post_form.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+# 4. Update post
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post_form.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
+
+# 5. Delete post
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Post
+    template_name = 'blog/post_confirm_delete.html'
+    success_url = '/posts/'
+
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
+
+
+
 # You can use Django's built-in auth views for login/logout in urls.py (no custom view needed)
