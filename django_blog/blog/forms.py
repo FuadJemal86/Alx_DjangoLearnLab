@@ -51,5 +51,26 @@ class CommentForm(forms.ModelForm):
         fields = ['content']
         widgets = {
             'content': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Write your comment...'}),
-        }        
-        
+        }    
+            
+from .models import Post, Tag
+
+class PostForm(forms.ModelForm):
+    tags = forms.CharField(required=False, help_text="Separate tags with commas.")
+
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'tags']
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if commit:
+            instance.save()
+        # handle tags
+        tags_str = self.cleaned_data.get('tags', '')
+        tag_names = [name.strip() for name in tags_str.split(',') if name.strip()]
+        instance.tags.clear()
+        for name in tag_names:
+            tag, created = Tag.objects.get_or_create(name=name)
+            instance.tags.add(tag)
+        return instance        

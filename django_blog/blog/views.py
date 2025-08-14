@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView, LogoutView
-
+from django.db.models import Q
 from .forms import UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
 
 
@@ -142,5 +142,22 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     
 
 
+from .models import Post, Tag
+
+def search_posts(request):
+    query = request.GET.get('q', '')
+    results = []
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+    return render(request, 'blog/search_results.html', {'query': query, 'results': results})
+
+def posts_by_tag(request, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    posts = tag.posts.all()
+    return render(request, 'blog/posts_by_tag.html', {'tag': tag, 'posts': posts})
 
 # You can use Django's built-in auth views for login/logout in urls.py (no custom view needed)
