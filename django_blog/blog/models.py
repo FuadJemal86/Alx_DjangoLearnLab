@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from .models import Post
+from taggit.managers import TaggableManager
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
@@ -78,3 +79,9 @@ class Tag(models.Model):
 
     def get_absolute_url(self):
         return reverse('posts-by-tag', kwargs={'tag_name': self.name})    
+
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    tags = TaggableManager()    
