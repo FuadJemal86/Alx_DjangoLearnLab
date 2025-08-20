@@ -3,8 +3,8 @@ from django.conf import settings  # to get the custom user model
 
 # Use settings.AUTH_USER_MODEL to reference the User model
 class Post(models.Model):
-    title = models.TextChoices( blank=True)
-    content = models.TextField(blank=True)
+    title = models.TextField()
+    content = models.TextField()
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='posts')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -16,7 +16,7 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='comments')
-    content = models.TextField( blank=True)
+    content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
