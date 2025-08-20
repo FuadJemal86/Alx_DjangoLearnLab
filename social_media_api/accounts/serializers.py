@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
     password2 = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
-    token = serializers.CharField(read_only=True)  # return token after registration
+    token = serializers.CharField(read_only=True)
 
     class Meta:
         model = User
@@ -29,8 +29,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('password2')
         user = get_user_model().objects.create_user(**validated_data)
-        # create token right here
-        token, _ = Token.objects.get_or_create(user=user)
+        # explicitly create token
+        token = Token.objects.create(user=user)
         user.token = token.key
         return user
 
@@ -44,7 +44,8 @@ class LoginSerializer(serializers.Serializer):
         user = authenticate(username=data['username'], password=data['password'])
         if not user:
             raise serializers.ValidationError("Invalid credentials.")
-        token, _ = Token.objects.get_or_create(user=user)
+        # explicitly create token (this may throw error if token already exists)
+        token = Token.objects.create(user=user)
         return {
             "user": user,
             "token": token.key
