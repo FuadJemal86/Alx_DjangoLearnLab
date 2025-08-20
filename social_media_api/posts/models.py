@@ -3,7 +3,7 @@ from django.conf import settings  # to get the custom user model
 
 # Use settings.AUTH_USER_MODEL to reference the User model
 class Post(models.Model):
-    title = models.TextField(max_length=200, blank=True)
+    title = models.CharField(max_length=200, blank=True)
     content = models.TextField(max_length=200, blank=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='posts')
     created_at = models.DateTimeField(auto_now_add=True)
