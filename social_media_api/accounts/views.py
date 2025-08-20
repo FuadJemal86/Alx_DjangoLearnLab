@@ -6,6 +6,10 @@ from rest_framework.views import APIView
 from django.contrib.auth import login
 from .models import User
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
+from rest_framework import viewsets, permissions, filters
+from rest_framework.pagination import PageNumberPagination
+from .models import Post, Comment
+from .serializers import PostSerializer, CommentSerializer
 
 
 class RegisterView(generics.CreateAPIView):
@@ -41,3 +45,41 @@ class UserDetailView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+
+class IsAuthorOrReadOnly(permissions.BasePermission):
+    """Allow only authors to edit/delete their objects."""
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.author == request.user
+
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all().order_by('-created_at')
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+    pagination_class = StandardResultsSetPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'content']
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all().order_by('-created_at')
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+    pagination_class = StandardResultsSetPagination
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)    
