@@ -24,7 +24,7 @@ class Comment(models.Model):
     def __str__(self):
         return f'Comment by {self.author} on {self.post}'
 
-class Link(models.Model):
+class Like(models.Model):
     user = models.ForeignKey(User , on_delete=models.CASCADE , related_name='likes')
 
 
