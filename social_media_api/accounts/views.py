@@ -1,9 +1,12 @@
 # accounts/views.py
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from django.contrib.auth import login
+
+from advanced_features_and_security.LibraryProject.accounts.models import CustomUser
 from .models import User
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
 from rest_framework import viewsets, permissions, filters
@@ -110,4 +113,4 @@ class UnFollowUserViewSet(generics.GenericAPIView):
             return Response({"error": "You cannot unfollow yourself."}, status=status.HTTP_400_BAD_REQUEST)
 
         request.user.follow(target_user)
-        return Response({"message": f"You are now unfollowing {target_user.username}."}, status=status.HTTP_200_OK)    
+        return Response({"message": f"You are now unfollow {target_user.username}."}, status=status.HTTP_200_OK)
