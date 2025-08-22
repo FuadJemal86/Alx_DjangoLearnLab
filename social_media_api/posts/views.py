@@ -2,6 +2,7 @@
 from rest_framework import viewsets, permissions, filters
 from rest_framework.pagination import PageNumberPagination
 from .models import Post, Comment
+from .serializers import PostSerializer , CommentSerializer
 
 
 

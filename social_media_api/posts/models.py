@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings  # to get the custom user model
 
-# Use settings.AUTH_USER_MODEL to reference the User model
 class Post(models.Model):
     title = models.TextField()
     content = models.TextField()

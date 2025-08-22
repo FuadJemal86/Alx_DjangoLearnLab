@@ -83,3 +83,29 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)    
+
+class FollowerUserViewSet(generics.GenericAPIView):
+     permission_classes = [permissions.IsAuthenticated]
+
+     def post(self, request, user_id):
+        target_user = get_object_or_404(User, id=user_id)
+
+        if request.user == target_user:
+            return Response({"error": "You cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
+
+        request.user.follow(target_user)
+        return Response({"message": f"You are now following {target_user.username}."}, status=status.HTTP_200_OK)
+
+
+
+class UnFollowUserViewSet(generics.GenericAPIView):
+     permission_classes = [permissions.IsAuthenticated]
+
+     def post(self, request, user_id):
+        target_user = get_object_or_404(User, id=user_id)
+
+        if request.user == target_user:
+            return Response({"error": "You cannot unfollow yourself."}, status=status.HTTP_400_BAD_REQUEST)
+
+        request.user.follow(target_user)
+        return Response({"message": f"You are now unfollowing {target_user.username}."}, status=status.HTTP_200_OK)    
