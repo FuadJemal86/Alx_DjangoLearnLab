@@ -85,6 +85,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)    
 
 class FollowerUserViewSet(generics.GenericAPIView):
+     queryset = User.objects.all()
      permission_classes = [permissions.IsAuthenticated]
 
      def post(self, request, user_id):
@@ -99,6 +100,7 @@ class FollowerUserViewSet(generics.GenericAPIView):
 
 
 class UnFollowUserViewSet(generics.GenericAPIView):
+     queryset = User.objects.all()
      permission_classes = [permissions.IsAuthenticated]
 
      def post(self, request, user_id):
