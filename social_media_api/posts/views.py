@@ -59,7 +59,7 @@ class FeedView(generics.ListAPIView):
   
 @login_required
 def like_post(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
+    post = generics.get_object_or_404(Post, pk=pk)
     
     # Check if already liked
     like, created = Like.objects.get_or_create(user=request.user, post=post)
@@ -79,7 +79,7 @@ def like_post(request, post_id):
 
 @login_required
 def unlike_post(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
+    post = generics.get_object_or_404(Post, pk=pk)
     
     # Remove the like if it exists
     like = Like.objects.filter(user=request.user, post=post).first()
