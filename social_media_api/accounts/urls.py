@@ -13,7 +13,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('me/', UserDetailView.as_view(), name='user-detail'),
     path('', include(router.urls)),
-    path('unfollow/int:user_id/', UnFollowUserViewSet.as_view(), name='unfollow-user'),
-    path('follow/int:user_id/', FollowerUserViewSet.as_view(), name='follow-user'),
+    path('unfollow/<int:user_id>/', UnFollowUserViewSet.as_view(), name='unfollow-user'),
+    path('follow/<int:user_id>/', FollowerUserViewSet.as_view(), name='follow-user'),
     
 ]
