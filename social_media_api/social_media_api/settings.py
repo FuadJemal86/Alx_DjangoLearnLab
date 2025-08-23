@@ -74,6 +74,24 @@ TEMPLATES = [
     },
 ]
 
+
+DEBUG = False
+
+ALLOWED_HOSTS = ["yourdomain.com", "www.yourdomain.com", "IP_ADDRESS"]
+
+# Security settings
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_SSL_REDIRECT = True   # If you’re using HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Static & media root
+STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_ROOT = BASE_DIR / "media"
+
+
 WSGI_APPLICATION = 'social_media_api.wsgi.application'
 
 
